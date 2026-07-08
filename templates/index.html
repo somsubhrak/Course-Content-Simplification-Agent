@@ -1,116 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Course Content Simplification Agent</title>
-
+    <title>CourseAI — Adaptive Learning Agent</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
-
 <body>
 
-    <div class="container">
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="header-brand">
+                <span class="brand-icon">&#128216;</span>
+                <div>
+                    <div class="brand-title">CourseAI</div>
+                    <div class="brand-sub">Adaptive Learning Agent · Powered by IBM Granite</div>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-blue">IBM watsonx.ai</span>
+                <span class="badge badge-gray">Granite LLM</span>
+            </div>
+        </div>
+    </header>
 
-        <h1>📘 Course Content Simplification Agent</h1>
+    <main class="main-content">
 
-        <p class="subtitle">
-            Powered by IBM Granite
-        </p>
+        <!-- Upload Card -->
+        <section class="card upload-card">
+            <h2 class="card-title">Analyze Course Material</h2>
+            <p class="card-desc">Upload a PDF of your lecture notes or textbook chapter. Choose your proficiency level and CourseAI will reframe the content to match your understanding.</p>
 
-        <div class="card">
+            <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
 
-            <form action="/upload"
-                  method="POST"
-                  enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group file-group">
+                        <label for="pdf" class="form-label">Course Material (PDF)</label>
+                        <div class="file-input-wrapper" id="file-drop-zone">
+                            <input id="pdf" type="file" name="pdf" accept=".pdf" required>
+                            <div class="file-input-ui">
+                                <span class="file-icon">&#128196;</span>
+                                <span class="file-label-text" id="file-label-text">Click to browse or drag &amp; drop a PDF</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <label for="pdf">
-                    <strong>Upload PDF</strong>
-                </label>
+                    <div class="form-group level-group">
+                        <label for="level" class="form-label">Proficiency Level</label>
+                        <select id="level" name="level">
+                            <option value="Beginner">&#127793; Beginner — No prior knowledge</option>
+                            <option value="Intermediate">&#127807; Intermediate — Basic familiarity</option>
+                            <option value="Advanced">&#128293; Advanced — Solid background</option>
+                            <option value="Expert">&#127881; Expert — Graduate level</option>
+                        </select>
+                        <p class="level-hint" id="level-hint">Content will use simple language, real-world examples, and avoid jargon.</p>
+                    </div>
+                </div>
 
-                <br><br>
-
-                <input
-                    id="pdf"
-                    type="file"
-                    name="pdf"
-                    accept=".pdf"
-                    required>
-
-                <br><br>
-
-                <label for="level">
-                    <strong>Learning Level</strong>
-                </label>
-
-                <br><br>
-
-                <select
-                    id="level"
-                    name="level">
-
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
-                    <option value="Expert">Expert</option>
-
-                </select>
-
-                <br><br>
-
-                <button type="submit">
-                    Analyze PDF
+                <button type="submit" id="analyze-btn" class="btn btn-primary btn-full">
+                    <span class="btn-icon">&#9881;</span> Analyze PDF
                 </button>
 
             </form>
-
-        </div>
+        </section>
 
         <!-- Loading Indicator -->
-
-        <div id="loading" style="display:none;">
-
+        <div id="loading" class="loading-box" style="display:none;">
             <div class="spinner"></div>
-
-            <p>
-                🤖 IBM Granite is simplifying your notes...
-            </p>
-
+            <p class="loading-text">IBM Granite is processing your material&hellip;</p>
+            <p class="loading-sub" id="loading-sub-text">This may take a moment for longer documents.</p>
         </div>
 
         <!-- AI Output -->
-
         {% if result %}
+        <section class="results-section">
 
-        <hr>
+            <div class="results-header">
+                <div class="results-meta">
+                    <h2 class="results-title">&#128203; AI-Simplified Notes</h2>
+                    <span class="results-level-badge">{{ level }}</span>
+                </div>
+                <button id="quiz-btn" class="btn btn-secondary">
+                    <span>&#129300;</span> Generate Quiz
+                </button>
+            </div>
 
-        <h2>📄 AI Simplified Notes</h2>
+            <div class="output" id="notes-output">
+                {{ result|safe }}
+            </div>
 
-        <p>
-
-            <strong>Learning Level:</strong>
-
-            {{ level }}
-
-        </p>
-
-        <div class="output">
-
-            {{ result|safe }}
-
-        </div>
-
+        </section>
         {% endif %}
 
+    </main>
+
+    <!-- Quiz Modal -->
+    <div id="quiz-modal" class="modal-backdrop" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="quiz-modal-title">&#129300; Knowledge Check Quiz</h2>
+                <button class="modal-close" id="modal-close-btn" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-level-row" id="modal-level-row" style="display:none;">
+                <span>Level:</span> <span class="results-level-badge" id="modal-level-badge"></span>
+            </div>
+            <div id="quiz-loading" class="loading-box" style="display:none;">
+                <div class="spinner"></div>
+                <p class="loading-text">Generating quiz questions&hellip;</p>
+            </div>
+            <div id="quiz-content" class="output quiz-output"></div>
+            <div id="quiz-error" class="error-box" style="display:none;"></div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-
 </body>
-
 </html>
