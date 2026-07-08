@@ -76,7 +76,8 @@ def quiz():
     prompt = build_quiz_prompt(extracted_text, level)
 
     try:
-        result = ask_granite(prompt)
+        token_budget = {"beginner": 600, "intermediate": 750, "advanced": 900, "expert": 1000}
+        result = ask_granite(prompt, max_tokens=token_budget.get(level.lower(), 900))
         html_result = _to_html(result)
         return jsonify({"html": html_result, "level": level})
     except Exception as e:
