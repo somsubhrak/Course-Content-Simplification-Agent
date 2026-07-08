@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Course Content Simplification Agent</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📘 Course Content Simplification Agent</h1>
+
+        <p class="subtitle">
+            Powered by IBM Granite
+        </p>
+
+        <div class="card">
+
+            <form action="/upload"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <label for="pdf">
+                    <strong>Upload PDF</strong>
+                </label>
+
+                <br><br>
+
+                <input
+                    id="pdf"
+                    type="file"
+                    name="pdf"
+                    accept=".pdf"
+                    required>
+
+                <br><br>
+
+                <label for="level">
+                    <strong>Learning Level</strong>
+                </label>
+
+                <br><br>
+
+                <select
+                    id="level"
+                    name="level">
+
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value="Expert">Expert</option>
+
+                </select>
+
+                <br><br>
+
+                <button type="submit">
+                    Analyze PDF
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Loading Indicator -->
+
+        <div id="loading" style="display:none;">
+
+            <div class="spinner"></div>
+
+            <p>
+                🤖 IBM Granite is simplifying your notes...
+            </p>
+
+        </div>
+
+        <!-- AI Output -->
+
+        {% if result %}
+
+        <hr>
+
+        <h2>📄 AI Simplified Notes</h2>
+
+        <p>
+
+            <strong>Learning Level:</strong>
+
+            {{ level }}
+
+        </p>
+
+        <div class="output">
+
+            {{ result|safe }}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
