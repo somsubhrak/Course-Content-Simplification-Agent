@@ -1,7 +1,7 @@
 
 from services.ibm_client import model
 
-def ask_granite(prompt, max_tokens):
+def ask_granite(prompt, max_tokens= 900):
 
     params = {
     "max_new_tokens": max_tokens,
