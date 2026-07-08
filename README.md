@@ -8,7 +8,7 @@ Powered by **IBM Granite** via [IBM watsonx.ai](https://www.ibm.com/watsonx), Co
 
 ## Live Demo
 
-Deployed on **Render.com** → _add your Render URL here_
+Deployed on **Render.com** → https://course-content-simplification-agent.onrender.com
 
 ---
 
@@ -128,7 +128,7 @@ Create a `.env` file in the project root:
 IBM_API_KEY=your_ibm_api_key_here
 IBM_PROJECT_ID=your_watsonx_project_id_here
 IBM_URL=https://us-south.ml.cloud.ibm.com
-IBM_MODEL_ID=ibm/granite-13b-instruct-v2
+IBM_MODEL_ID=available model
 ```
 
 > **Never commit `.env` to version control.** It is listed in `.gitignore`.
