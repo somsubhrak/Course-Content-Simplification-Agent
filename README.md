@@ -2,7 +2,7 @@
 
 > **An AI-powered agent that intelligently analyzes academic content and reframes explanations based on a learner's proficiency level — from Beginner to Expert.**
 
-Powered by **IBM Granite** via [IBM watsonx.ai](https://www.ibm.com/watsonx), CourseAI solves a core challenge in education: lecture notes and textbooks are written at a fixed complexity level that does not suit every student. CourseAI takes any PDF of course material and produces personalized, beautifully formatted study notes at exactly the right depth — and can generate a level-adapted quiz on the same content.
+Powered by **Meta Llama** via [IBM watsonx.ai](https://www.ibm.com/watsonx), CourseAI solves a core challenge in education: lecture notes and textbooks are written at a fixed complexity level that does not suit every student. CourseAI takes any PDF of course material and produces personalized, beautifully formatted study notes at exactly the right depth — and can generate a level-adapted quiz on the same content.
 
 ---
 
@@ -32,7 +32,7 @@ Deployed on **Render.com** → https://course-content-simplification-agent.onren
 | Layer | Technology |
 |---|---|
 | **Backend** | Python 3, Flask 3.1 |
-| **AI Model** | IBM Granite (via `ibm-watsonx-ai`) |
+| **AI Model** | Meta Llama 3.3 70B Instruct (via `ibm-watsonx-ai`) |
 | **PDF Parsing** | PyPDF2 |
 | **Markdown → HTML** | `markdown` (extensions: `tables`, `fenced_code`, `nl2br`, `sane_lists`) |
 | **Frontend** | Vanilla HTML/CSS/JS — no frameworks |
@@ -50,7 +50,7 @@ CourseAI/
 │
 ├── services/
 │   ├── ibm_client.py       # IBM watsonx.ai ModelInference setup
-│   ├── granite_service.py  # Calls Granite model, returns raw text
+│   ├── granite_service.py  # Calls Llama model, returns raw text
 │   ├── pdf_service.py      # Extracts text from PDF using PyPDF2
 │   └── prompt_service.py   # Builds level-specific prompts + quiz prompt
 │
@@ -93,7 +93,7 @@ CourseAI/
 
 - Python 3.10+
 - An [IBM watsonx.ai](https://www.ibm.com/watsonx) account with a project and API key
-- The IBM Granite model enabled in your project
+- The Meta Llama 3.3 70B Instruct model enabled in your project
 
 ### 1. Clone the repository
 
@@ -164,8 +164,8 @@ Set these in **Render → Your Service → Environment**:
 |---|---|
 | `IBM_API_KEY` | Your IBM Cloud API key |
 | `IBM_PROJECT_ID` | Your watsonx.ai project ID |
-| `IBM_URL` | `https://us-south.ml.cloud.ibm.com` |
-| `IBM_MODEL_ID` | e.g. `ibm/granite-13b-instruct-v2` |
+| `IBM_URL` | `https://au-syd.ml.cloud.ibm.com` |
+| `IBM_MODEL_ID` | e.g. `meta-llama/llama-3-3-70b-instruct` |
 
 > Do **not** upload a `.env` file to Render — use the environment variable panel.
 
@@ -192,7 +192,7 @@ Render's free tier uses an **ephemeral filesystem** — uploaded files are lost 
 | `IBM_API_KEY` | Yes | IBM Cloud API key for watsonx.ai authentication |
 | `IBM_PROJECT_ID` | Yes | The watsonx.ai project that hosts your model |
 | `IBM_URL` | Yes | Regional watsonx.ai endpoint URL |
-| `IBM_MODEL_ID` | Yes | Granite model ID (e.g. `ibm/granite-13b-instruct-v2`) |
+| `IBM_MODEL_ID` | Yes | Granite model ID (e.g. `meta-llama/llama-3-3-70b-instruct`) |
 
 ---
 
