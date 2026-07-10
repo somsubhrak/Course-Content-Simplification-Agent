@@ -54,7 +54,7 @@ def upload():
 
     prompt = build_prompt(extracted_text, level)
     try:
-        token_budget = {"beginner": 600, "intermediate": 750, "advanced": 900, "expert": 1000}
+        token_budget = {"beginner": 750, "intermediate": 900, "advanced": 1200, "expert": 1500}
         result = ask_granite(prompt, max_tokens=token_budget.get(level.lower(), 900))
         html_result = _to_html(result)
     except Exception as e:
